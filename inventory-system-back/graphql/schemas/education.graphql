@@ -1,0 +1,11 @@
+type Mutation {
+    #TODO
+}
+
+type Query {
+    #TODO
+}
+
+type Subscription {
+    #TODO
+}
