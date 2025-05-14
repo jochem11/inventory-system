@@ -12,13 +12,13 @@ type Repository interface {
 	GetCourseByID(ctx context.Context, id string) (*Course, error)
 	ListCourses(ctx context.Context, skip uint64, take uint64) ([]*Course, error)
 	UpdateCourse(ctx context.Context, c *Course) (*Course, error)
-	DeleteCourse(ctx context.Context, id string) error
+	DeleteCourseByID(ctx context.Context, id string) error
 
 	PutClass(ctx context.Context, c *Class) error
 	GetClassByID(ctx context.Context, id string) (*Class, error)
 	ListClasses(ctx context.Context, skip uint64, take uint64) ([]*Class, error)
 	UpdateClass(ctx context.Context, c *Class) (*Class, error)
-	DeleteClass(ctx context.Context, id string) error
+	DeleteClassByID(ctx context.Context, id string) error
 }
 
 type postgresRepository struct {
@@ -96,7 +96,7 @@ func (r *postgresRepository) UpdateCourse(ctx context.Context, c *Course) (*Cour
 	return r.GetCourseByID(ctx, c.ID)
 }
 
-func (r *postgresRepository) DeleteCourse(ctx context.Context, id string) error {
+func (r *postgresRepository) DeleteCourseByID(ctx context.Context, id string) error {
 	res, err := r.db.ExecContext(ctx, "DELETE FROM courses WHERE id = $1", id)
 	if err != nil {
 		return err
@@ -188,7 +188,7 @@ func (r *postgresRepository) UpdateClass(ctx context.Context, c *Class) (*Class,
 	return r.GetClassByID(ctx, c.ID)
 }
 
-func (r *postgresRepository) DeleteClass(ctx context.Context, id string) error {
+func (r *postgresRepository) DeleteClassByID(ctx context.Context, id string) error {
 	// Delete the class (the associated course will be automatically deleted due to ON DELETE CASCADE)
 	res, err := r.db.ExecContext(ctx, "DELETE FROM classes WHERE id = $1", id)
 	if err != nil {
