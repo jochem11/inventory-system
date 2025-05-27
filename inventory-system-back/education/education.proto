@@ -1,0 +1,124 @@
+syntax = "proto3";
+
+package pb;
+
+option go_package = "../pb";
+
+import "google/protobuf/timestamp.proto";
+
+// Models
+message Course {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+message Class {
+  string id = 1;
+  string name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+  string course_id = 5;
+  optional Course course = 6;
+}
+
+// Requests
+message PostCourseRequest {
+  string name = 1;
+}
+
+message GetCourseRequest {
+  string id = 1;
+}
+
+message GetCoursesRequest {
+  uint64 skip = 1;
+  uint64 take = 2;
+}
+
+message UpdateCourseRequest {
+  string id = 1;
+  optional string name = 2;
+}
+
+message DeleteCourseRequest {
+  string id = 1;
+}
+
+message PostClassRequest {
+  string name = 1;
+  string course_id = 2;
+}
+
+message GetClassRequest {
+  string id = 1;
+}
+
+message GetClassesRequest {
+  uint64 skip = 1;
+  uint64 take = 2;
+}
+
+message UpdateClassRequest {
+  string id = 1;
+  optional string name = 2;
+  optional string course_id = 3;
+}
+
+message DeleteClassRequest {
+  string id = 1;
+}
+
+// Responses
+message PostCourseResponse {
+  Course course = 1;
+}
+
+message GetCourseResponse {
+  Course course = 1;
+}
+
+message GetCoursesResponse {
+  repeated Course courses = 1;
+}
+
+message UpdateCourseResponse {
+  Course course = 1;
+}
+
+message PostClassResponse {
+  Class class = 1;
+}
+
+message GetClassResponse {
+  Class class = 1;
+}
+
+message GetClassesResponse {
+  repeated Class classes = 1;
+}
+
+message UpdateClassResponse {
+  Class class = 1;
+}
+
+message DeleteCourseResponse {}
+message DeleteClassResponse {}
+
+// Service
+service EducationService {
+  // Course methods
+  rpc PostCourse(PostCourseRequest) returns (PostCourseResponse);
+  rpc GetCourse(GetCourseRequest) returns (GetCourseResponse);
+  rpc GetCourses(GetCoursesRequest) returns (GetCoursesResponse);
+  rpc UpdateCourse(UpdateCourseRequest) returns (UpdateCourseResponse);
+  rpc DeleteCourse(DeleteCourseRequest) returns (DeleteCourseResponse);
+
+  // Class methods
+  rpc PostClass(PostClassRequest) returns (PostClassResponse);
+  rpc GetClass(GetClassRequest) returns (GetClassResponse);
+  rpc GetClasses(GetClassesRequest) returns (GetClassesResponse);
+  rpc UpdateClass(UpdateClassRequest) returns (UpdateClassResponse);
+  rpc DeleteClass(DeleteClassRequest) returns (DeleteClassResponse);
+}
