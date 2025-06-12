@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package pb;
 
-option go_package = "../pb";
+option go_package = "github.com/jochem11/inventory-system-back/education/pb";
 
 import "google/protobuf/timestamp.proto";
 
@@ -114,6 +114,7 @@ service EducationService {
   rpc GetCourses(GetCoursesRequest) returns (GetCoursesResponse);
   rpc UpdateCourse(UpdateCourseRequest) returns (UpdateCourseResponse);
   rpc DeleteCourse(DeleteCourseRequest) returns (DeleteCourseResponse);
+  rpc LiveCourses(GetCoursesRequest) returns (stream GetCoursesResponse);
 
   // Class methods
   rpc PostClass(PostClassRequest) returns (PostClassResponse);
@@ -121,4 +122,5 @@ service EducationService {
   rpc GetClasses(GetClassesRequest) returns (GetClassesResponse);
   rpc UpdateClass(UpdateClassRequest) returns (UpdateClassResponse);
   rpc DeleteClass(DeleteClassRequest) returns (DeleteClassResponse);
+  rpc LiveClasses(GetClassesRequest) returns (stream GetClassesResponse);
 }

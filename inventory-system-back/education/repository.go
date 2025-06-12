@@ -3,6 +3,8 @@ package education
 import (
 	"context"
 	"database/sql"
+
+	_ "github.com/lib/pq"
 )
 
 type Repository interface {
@@ -65,12 +67,14 @@ func (r *postgresRepository) ListCourses(ctx context.Context, skip uint64, take 
 		return nil, err
 	}
 	defer rows.Close()
+
 	courses := []*Course{}
 	for rows.Next() {
 		c := &Course{}
 		if err := rows.Scan(&c.ID, &c.Name, &c.CreatedAt, &c.UpdatedAt); err != nil {
 			return nil, err
 		}
+		courses = append(courses, c) // Add this line to append the course to the slice
 	}
 	if err = rows.Err(); err != nil {
 		return nil, err

@@ -1163,7 +1163,7 @@ const file_education_proto_rawDesc = "" +
 	"\x13UpdateClassResponse\x12\x1f\n" +
 	"\x05class\x18\x01 \x01(\v2\t.pb.ClassR\x05class\"\x16\n" +
 	"\x14DeleteCourseResponse\"\x15\n" +
-	"\x13DeleteClassResponse2\xfa\x04\n" +
+	"\x13DeleteClassResponse2\xfa\x05\n" +
 	"\x10EducationService\x12;\n" +
 	"\n" +
 	"PostCourse\x12\x15.pb.PostCourseRequest\x1a\x16.pb.PostCourseResponse\x128\n" +
@@ -1171,13 +1171,15 @@ const file_education_proto_rawDesc = "" +
 	"\n" +
 	"GetCourses\x12\x15.pb.GetCoursesRequest\x1a\x16.pb.GetCoursesResponse\x12A\n" +
 	"\fUpdateCourse\x12\x17.pb.UpdateCourseRequest\x1a\x18.pb.UpdateCourseResponse\x12A\n" +
-	"\fDeleteCourse\x12\x17.pb.DeleteCourseRequest\x1a\x18.pb.DeleteCourseResponse\x128\n" +
+	"\fDeleteCourse\x12\x17.pb.DeleteCourseRequest\x1a\x18.pb.DeleteCourseResponse\x12>\n" +
+	"\vLiveCourses\x12\x15.pb.GetCoursesRequest\x1a\x16.pb.GetCoursesResponse0\x01\x128\n" +
 	"\tPostClass\x12\x14.pb.PostClassRequest\x1a\x15.pb.PostClassResponse\x125\n" +
 	"\bGetClass\x12\x13.pb.GetClassRequest\x1a\x14.pb.GetClassResponse\x12;\n" +
 	"\n" +
 	"GetClasses\x12\x15.pb.GetClassesRequest\x1a\x16.pb.GetClassesResponse\x12>\n" +
 	"\vUpdateClass\x12\x16.pb.UpdateClassRequest\x1a\x17.pb.UpdateClassResponse\x12>\n" +
-	"\vDeleteClass\x12\x16.pb.DeleteClassRequest\x1a\x17.pb.DeleteClassResponseB\aZ\x05../pbb\x06proto3"
+	"\vDeleteClass\x12\x16.pb.DeleteClassRequest\x1a\x17.pb.DeleteClassResponse\x12>\n" +
+	"\vLiveClasses\x12\x15.pb.GetClassesRequest\x1a\x16.pb.GetClassesResponse0\x01B8Z6github.com/jochem11/inventory-system-back/education/pbb\x06proto3"
 
 var (
 	file_education_proto_rawDescOnce sync.Once
@@ -1236,23 +1238,27 @@ var file_education_proto_depIdxs = []int32{
 	4,  // 15: pb.EducationService.GetCourses:input_type -> pb.GetCoursesRequest
 	5,  // 16: pb.EducationService.UpdateCourse:input_type -> pb.UpdateCourseRequest
 	6,  // 17: pb.EducationService.DeleteCourse:input_type -> pb.DeleteCourseRequest
-	7,  // 18: pb.EducationService.PostClass:input_type -> pb.PostClassRequest
-	8,  // 19: pb.EducationService.GetClass:input_type -> pb.GetClassRequest
-	9,  // 20: pb.EducationService.GetClasses:input_type -> pb.GetClassesRequest
-	10, // 21: pb.EducationService.UpdateClass:input_type -> pb.UpdateClassRequest
-	11, // 22: pb.EducationService.DeleteClass:input_type -> pb.DeleteClassRequest
-	12, // 23: pb.EducationService.PostCourse:output_type -> pb.PostCourseResponse
-	13, // 24: pb.EducationService.GetCourse:output_type -> pb.GetCourseResponse
-	14, // 25: pb.EducationService.GetCourses:output_type -> pb.GetCoursesResponse
-	15, // 26: pb.EducationService.UpdateCourse:output_type -> pb.UpdateCourseResponse
-	20, // 27: pb.EducationService.DeleteCourse:output_type -> pb.DeleteCourseResponse
-	16, // 28: pb.EducationService.PostClass:output_type -> pb.PostClassResponse
-	17, // 29: pb.EducationService.GetClass:output_type -> pb.GetClassResponse
-	18, // 30: pb.EducationService.GetClasses:output_type -> pb.GetClassesResponse
-	19, // 31: pb.EducationService.UpdateClass:output_type -> pb.UpdateClassResponse
-	21, // 32: pb.EducationService.DeleteClass:output_type -> pb.DeleteClassResponse
-	23, // [23:33] is the sub-list for method output_type
-	13, // [13:23] is the sub-list for method input_type
+	4,  // 18: pb.EducationService.LiveCourses:input_type -> pb.GetCoursesRequest
+	7,  // 19: pb.EducationService.PostClass:input_type -> pb.PostClassRequest
+	8,  // 20: pb.EducationService.GetClass:input_type -> pb.GetClassRequest
+	9,  // 21: pb.EducationService.GetClasses:input_type -> pb.GetClassesRequest
+	10, // 22: pb.EducationService.UpdateClass:input_type -> pb.UpdateClassRequest
+	11, // 23: pb.EducationService.DeleteClass:input_type -> pb.DeleteClassRequest
+	9,  // 24: pb.EducationService.LiveClasses:input_type -> pb.GetClassesRequest
+	12, // 25: pb.EducationService.PostCourse:output_type -> pb.PostCourseResponse
+	13, // 26: pb.EducationService.GetCourse:output_type -> pb.GetCourseResponse
+	14, // 27: pb.EducationService.GetCourses:output_type -> pb.GetCoursesResponse
+	15, // 28: pb.EducationService.UpdateCourse:output_type -> pb.UpdateCourseResponse
+	20, // 29: pb.EducationService.DeleteCourse:output_type -> pb.DeleteCourseResponse
+	14, // 30: pb.EducationService.LiveCourses:output_type -> pb.GetCoursesResponse
+	16, // 31: pb.EducationService.PostClass:output_type -> pb.PostClassResponse
+	17, // 32: pb.EducationService.GetClass:output_type -> pb.GetClassResponse
+	18, // 33: pb.EducationService.GetClasses:output_type -> pb.GetClassesResponse
+	19, // 34: pb.EducationService.UpdateClass:output_type -> pb.UpdateClassResponse
+	21, // 35: pb.EducationService.DeleteClass:output_type -> pb.DeleteClassResponse
+	18, // 36: pb.EducationService.LiveClasses:output_type -> pb.GetClassesResponse
+	25, // [25:37] is the sub-list for method output_type
+	13, // [13:25] is the sub-list for method input_type
 	13, // [13:13] is the sub-list for extension type_name
 	13, // [13:13] is the sub-list for extension extendee
 	0,  // [0:13] is the sub-list for field type_name

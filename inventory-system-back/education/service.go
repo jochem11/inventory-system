@@ -3,6 +3,7 @@ package education
 import (
 	"context"
 	"github.com/segmentio/ksuid"
+	"log"
 	"time"
 )
 
@@ -12,6 +13,7 @@ type Service interface {
 	GetCourses(ctx context.Context, skip *uint64, take *uint64) ([]*Course, error)
 	DeleteCourseByID(ctx context.Context, id string) error
 	UpdateCourse(ctx context.Context, id string, name *string) (*Course, error)
+	LiveCourses(ctx context.Context, skip *uint64, take *uint64) (<-chan []*Course, error)
 
 	PostClass(ctx context.Context, name, courseID string) (*Class, error)
 	GetClass(ctx context.Context, id string) (*Class, error)
@@ -98,11 +100,52 @@ func (s *educationService) UpdateCourse(ctx context.Context, id string, name *st
 	}
 
 	existing.UpdatedAt = time.Now()
-	if err := s.repository.PutCourse(ctx, existing); err != nil {
+
+	updated, err := s.repository.UpdateCourse(ctx, existing)
+	if err != nil {
 		return nil, err
 	}
 
-	return existing, nil
+	return updated, nil
+}
+
+func (s *educationService) LiveCourses(ctx context.Context, skip *uint64, take *uint64) (<-chan []*Course, error) {
+	skip, take = s.defaultSkipTake(skip, take)
+
+	// Create a buffered channel to avoid blocking
+	coursesChan := make(chan []*Course)
+
+	// Start a goroutine to handle the streaming of courses
+	go func() {
+		defer close(coursesChan)
+
+		ticker := time.NewTicker(5 * time.Second)
+		defer ticker.Stop()
+
+		for {
+			select {
+			case <-ctx.Done():
+				return
+			case <-ticker.C:
+				// Get the current batch of courses
+				courses, err := s.repository.ListCourses(ctx, *skip, *take)
+				if err != nil {
+					// Log the error but continue the stream
+					log.Printf("Error fetching courses: %v", err)
+					continue
+				}
+
+				select {
+				case coursesChan <- courses:
+					// Successfully sent courses
+				case <-ctx.Done():
+					return
+				}
+			}
+		}
+	}()
+
+	return coursesChan, nil
 }
 
 func (s *educationService) PostClass(ctx context.Context, name, courseID string) (*Class, error) {
@@ -149,9 +192,10 @@ func (s *educationService) UpdateClass(ctx context.Context, id string, name *str
 
 	existing.UpdatedAt = time.Now()
 
-	if err := s.repository.PutClass(ctx, existing); err != nil {
+	updated, err := s.repository.UpdateClass(ctx, existing)
+	if err != nil {
 		return nil, err
 	}
 
-	return existing, nil
+	return updated, nil
 }

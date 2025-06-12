@@ -1,0 +1,10 @@
+schema:
+  - "schemas/**/*.graphql"
+
+exec:
+  filename: generated/generated.go
+  package: generated
+
+model:
+  filename: generated/models_gen.go
+  package: generated

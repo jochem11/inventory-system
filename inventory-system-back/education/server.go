@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"net"
+	"time"
 )
 
 type grpcServer struct {
@@ -107,6 +108,43 @@ func (s *grpcServer) DeleteCourse(ctx context.Context, req *pb.DeleteCourseReque
 		return nil, err
 	}
 	return &pb.DeleteCourseResponse{}, nil
+}
+
+func (s *grpcServer) LiveCourses(req *pb.GetCoursesRequest, stream pb.EducationService_LiveCoursesServer) error {
+	// Create a ticker to periodically send updates
+	ticker := time.NewTicker(5 * time.Second)
+	defer ticker.Stop()
+
+	for {
+		select {
+		case <-stream.Context().Done():
+			return stream.Context().Err()
+		case <-ticker.C:
+			// Get the latest courses using your existing service method
+			courses, err := s.service.GetCourses(stream.Context(), &req.Skip, &req.Take)
+			if err != nil {
+				return err
+			}
+
+			// Convert the courses to protobuf format
+			pbCourses := make([]*pb.Course, 0, len(courses))
+			for _, c := range courses {
+				pbCourses = append(pbCourses, &pb.Course{
+					Id:        c.ID,
+					Name:      c.Name,
+					UpdatedAt: timestamppb.New(c.UpdatedAt),
+					CreatedAt: timestamppb.New(c.CreatedAt),
+				})
+			}
+
+			// Send the courses through the stream
+			if err := stream.Send(&pb.GetCoursesResponse{
+				Courses: pbCourses,
+			}); err != nil {
+				return err
+			}
+		}
+	}
 }
 
 // --- Class Methods ---

@@ -1,11 +1,72 @@
+scalar Time
+
+type Course {
+    id: String!
+    name: String!
+    createdAt: Time!
+    updatedAt: Time!
+}
+
+type Class {
+    id: String!
+    name: String!
+    createdAt: Time!
+    updatedAt: Time!
+    courseId: String!
+    course: Course!
+}
+
+input PaginationInput {
+    skip: Int = 0
+    take: Int = 50
+}
+
+# Course inputs
+input CreateCourseInput {
+    name: String!
+}
+
+input UpdateCourseInput {
+    id: String!
+    name: String
+}
+
+input DeleteByIdCourseInput {
+    id: String!
+}
+
+# Class inputs
+input CreateClassInput {
+    name: String!
+    courseId: String!
+}
+
+input UpdateClassInput {
+    id: String!
+    name: String
+    courseId: String
+}
+
+input DeleteByIdClassInput {
+    id: String!
+}
+
 type Mutation {
-    #TODO
+    createCourse(course: CreateCourseInput!): Course!
+    updateCourse(course: UpdateCourseInput!): Course!
+    deleteCourse(course: DeleteByIdCourseInput!): Boolean!
+
+    createClass(class: CreateClassInput!): Class!
+    updateClass(class: UpdateClassInput!): Class!
+    deleteClass(class: DeleteByIdClassInput!): Boolean!
 }
 
 type Query {
-    #TODO
+    courses(pagination: PaginationInput, id: String): [Course!]!
+    classes(pagination: PaginationInput, id: String): [Class!]!
 }
 
 type Subscription {
-    #TODO
+    liveCourses(pagination: PaginationInput): [Course!]!
+    liveClasses(pagination: PaginationInput): [Class!]!
 }
